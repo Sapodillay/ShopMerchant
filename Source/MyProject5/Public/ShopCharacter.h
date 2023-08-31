@@ -4,6 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+
+//Input includes
+#include "Components/InputComponent.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+
 #include "ShopCharacter.generated.h"
 
 UCLASS()
@@ -15,9 +21,28 @@ public:
 	// Sets default values for this character's properties
 	AShopCharacter();
 
+	UPROPERTY(EditDefaultsOnly, Category = Input)
+	UInputMappingContext* MappingContext;
+	
+	UPROPERTY(EditDefaultsOnly, Category = Input)
+	UInputAction* OpenAction;
+
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UShopWidget> ShopWidgetClass;
+
+	UPROPERTY()
+	class UShopWidget* ShopWidget;
+	
+	
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	void SetupInputs();
+
+	void OpenShop();
 
 public:	
 	// Called every frame
