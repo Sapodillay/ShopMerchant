@@ -9,6 +9,8 @@
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "PlayerWallet.h"
+#include "UShopSystem.h"
 
 #include "ShopCharacter.generated.h"
 
@@ -33,8 +35,10 @@ public:
 
 	UPROPERTY()
 	class UShopWidget* ShopWidget;
-	
-	
+
+	PlayerWallet* M_PlayerWallet;
+	UPROPERTY()
+	UShopSystem* M_ShopSystem;
 
 protected:
 	// Called when the game starts or when spawned
@@ -50,5 +54,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	PlayerWallet* GetPlayerWallet();
 
 };

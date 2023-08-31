@@ -20,6 +20,8 @@ AShopCharacter::AShopCharacter()
 void AShopCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	M_PlayerWallet = new PlayerWallet(5000, 5000);
 	
 	SetupInputs();
 }
@@ -47,7 +49,19 @@ void AShopCharacter::OpenShop()
 			ShopWidget = CreateWidget<UShopWidget>(PlayerController, ShopWidgetClass);
 			check(ShopWidget);
 			ShopWidget->AddToPlayerScreen();
+			ShopWidget->SetVisibility(ESlateVisibility::Visible);
+			
 			UE_LOG(LogTemp, Warning, TEXT("Opened shop"))
+
+			PlayerController->SetInputMode(FInputModeUIOnly());
+
+			//Create shop system,
+			M_ShopSystem = NewObject<UShopSystem>();
+			M_ShopSystem->SetWallet(M_PlayerWallet);
+
+			//Setup widget with system.
+			ShopWidget->Setup(M_ShopSystem);
+
 		}
 	}
 
@@ -71,5 +85,10 @@ void AShopCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 		EnhancedInputComponent->BindAction(OpenAction, ETriggerEvent::Started, this, &AShopCharacter::OpenShop);
 	}
 
+}
+
+PlayerWallet* AShopCharacter::GetPlayerWallet()
+{
+	return M_PlayerWallet;
 }
 
