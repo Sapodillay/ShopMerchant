@@ -4,7 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/TextBlock.h"
 #include "MenuItem.generated.h"
+
 
 /**
  * 
@@ -13,5 +15,18 @@ UCLASS()
 class MYPROJECT5_API UMenuItem : public UUserWidget
 {
 	GENERATED_BODY()
+	
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	UTextBlock* DisplayText;
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	UTextBlock* CostDisplayText;
+
+public:
+	int ShopID;
+	
+	void SetData(int ID, FText DisplayString, int Cost);
+
+	UFUNCTION(BlueprintCallable)
+	void OnButtonClick();
 	
 };
