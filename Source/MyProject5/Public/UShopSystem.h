@@ -11,7 +11,7 @@
 
 
 UDELEGATE()
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPurchase, int, ID);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnPurchase, int, ID, int, Gold);
 
 
 /**

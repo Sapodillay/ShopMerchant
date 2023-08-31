@@ -60,7 +60,7 @@ void AShopCharacter::OpenShop()
 			M_ShopSystem->SetWallet(M_PlayerWallet);
 
 			//Setup widget with system.
-			ShopWidget->Setup(M_ShopSystem);
+			ShopWidget->Setup(M_ShopSystem, M_PlayerWallet->GetGold());
 
 		}
 	}

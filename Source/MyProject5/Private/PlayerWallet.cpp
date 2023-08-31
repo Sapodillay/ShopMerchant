@@ -11,10 +11,16 @@ PlayerWallet::~PlayerWallet()
 {
 }
 
+int PlayerWallet::GetGold()
+{
+	return m_Gold;
+}
+
 bool PlayerWallet::PurchaseWithGold(int Gold)
 {
 	if (m_Gold >= Gold)
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Purchased"))
 		m_Gold = m_Gold - Gold;
 		return true;
 	}

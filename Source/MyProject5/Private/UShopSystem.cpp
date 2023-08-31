@@ -12,37 +12,37 @@ TMap<int, ItemStruct> UShopSystem::GetItems()
 	ItemStruct Item1;
 	Item1.DisplayName = FText::FromString("Wood");
 	Item1.GemCost = 5;
-	Item1.GoldCost = 100;
+	Item1.GoldCost = 500;
 	DummyData.Add(1, Item1);
 	
 	ItemStruct Item2;
 	Item2.DisplayName = FText::FromString("Dirt");
 	Item2.GemCost = 5;
-	Item2.GoldCost = 100;
+	Item2.GoldCost = 300;
 	DummyData.Add(2, Item2);
 	
 	ItemStruct Item3;
 	Item3.DisplayName = FText::FromString("Iron");
 	Item3.GemCost = 5;
-	Item3.GoldCost = 100;
+	Item3.GoldCost = 150;
 	DummyData.Add(3, Item3);
 
 	ItemStruct Item4;
 	Item4.DisplayName = FText::FromString("Test1");
 	Item4.GemCost = 5;
-	Item4.GoldCost = 100;
+	Item4.GoldCost = 5000;
 	DummyData.Add(4, Item4);
 
 	ItemStruct Item5;
 	Item5.DisplayName = FText::FromString("Test2");
 	Item5.GemCost = 5;
-	Item5.GoldCost = 100;
+	Item5.GoldCost = 250;
 	DummyData.Add(5, Item5);
 
 	ItemStruct Item6;
 	Item6.DisplayName = FText::FromString("Test3");
 	Item6.GemCost = 5;
-	Item6.GoldCost = 100;
+	Item6.GoldCost = 1;
 	DummyData.Add(6, Item6);
 
 	
@@ -55,10 +55,10 @@ TOptional<ItemStruct*> UShopSystem::PurchaseItem(int ItemID)
 	if (M_Items.Contains(ItemID))
 	{
 		ItemStruct* Item = M_Items.Find(ItemID);
-		if (M_Wallet->PurchaseWithGems(Item->GoldCost))
+		if (M_Wallet->PurchaseWithGold(Item->GoldCost))
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Bought item"))
-			OnPurchase.Broadcast(ItemID);
+			OnPurchase.Broadcast(ItemID, M_Wallet->GetGold());
 			M_Items.Remove(ItemID);
 			return Item;
 		}

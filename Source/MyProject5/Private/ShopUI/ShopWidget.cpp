@@ -5,20 +5,20 @@
 
 #include "Components/ScrollBox.h"
 
-void UShopWidget::Setup(UShopSystem* shopSystem)
+void UShopWidget::Setup(UShopSystem* shopSystem, int StartGold)
 {
 
 	M_ShopSystem = shopSystem;
-	M_ShopSystem->OnPurchase.AddDynamic(this, &UShopWidget::RemoveItem);
+	M_ShopSystem->OnPurchase.AddDynamic(this, &UShopWidget::RemoveAndUpdate);
 	
 	TMap<int, ItemStruct> Items = M_ShopSystem->GetItemDisplay();
 
 	for (const auto Item : Items)
 	{
-		ParseItem(Item.Key, Item.Value.DisplayName, Item.Value.GemCost);
+		ParseItem(Item.Key, Item.Value.DisplayName, Item.Value.GoldCost);
 	}
 
-
+	SetGoldDisplay(StartGold);
 	
 }
 
@@ -37,8 +37,9 @@ void UShopWidget::ParseItem(int ID, FText DisplayString, int Cost)
 	}
 }
 
-void UShopWidget::RemoveItem(int ID)
+void UShopWidget::RemoveAndUpdate(int ID, int Gold)
 {
+	SetGoldDisplay(Gold);
 	for (auto MenuItem : MenuItems)
 	{
 		if(MenuItem->ShopID == ID)
@@ -47,6 +48,11 @@ void UShopWidget::RemoveItem(int ID)
 			ItemBox->RemoveChild(MenuItem);
 		}
 	}
+}
+
+void UShopWidget::SetGoldDisplay(int Gold)
+{
+	GoldDisplay->SetText(FText::AsNumber(Gold));
 }
 
 

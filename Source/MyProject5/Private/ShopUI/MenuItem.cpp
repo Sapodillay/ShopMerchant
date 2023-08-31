@@ -11,6 +11,9 @@ void UMenuItem::SetData(int id, FText DisplayString, int Cost)
 	ShopID = id;
 	DisplayText->SetText(DisplayString);
 	CostDisplayText->SetText(FText::AsNumber(Cost));
+
+	BuyButton->OnClicked.AddDynamic(this, &UMenuItem::OnButtonClick);
+	
 }
 
 

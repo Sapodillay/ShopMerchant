@@ -29,14 +29,20 @@ class MYPROJECT5_API UShopWidget : public UUserWidget
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UScrollBox* ItemBox;
 
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UTextBlock* GoldDisplay;
 
+	
 public:
 
-	void Setup(UShopSystem* ShopSystem);
+	void Setup(UShopSystem* ShopSystem, int StartGold);
 	
 	void ParseItem(int ID, FText DisplayString, int Cost);
 
 	UFUNCTION()
-	void RemoveItem(int ID);
+	void RemoveAndUpdate(int ID, int Gold);
+
+	UFUNCTION()
+	void SetGoldDisplay(int Gold);
 	
 };
