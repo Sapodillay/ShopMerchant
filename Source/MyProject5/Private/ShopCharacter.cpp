@@ -3,18 +3,54 @@
 
 #include "ShopCharacter.h"
 
+#include "Blueprint/UserWidget.h"
+#include "ShopUI/ShopWidget.h"
+
 // Sets default values
 AShopCharacter::AShopCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	ShopWidget = nullptr;
+	ShopWidgetClass = nullptr;
 }
 
 // Called when the game starts or when spawned
 void AShopCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	SetupInputs();
+}
+
+void AShopCharacter::SetupInputs()
+{
+	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
+	{
+		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
+		{
+			Subsystem->AddMappingContext(MappingContext, 0);
+		}
+	}
+}
+
+void AShopCharacter::OpenShop()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Trying to open shop."))
+	if (IsLocallyControlled())
+	{
+		APlayerController* PlayerController = Cast<APlayerController>(Controller);
+		if (ShopWidgetClass)
+		{
+			check(PlayerController);
+			ShopWidget = CreateWidget<UShopWidget>(PlayerController, ShopWidgetClass);
+			check(ShopWidget);
+			ShopWidget->AddToPlayerScreen();
+			UE_LOG(LogTemp, Warning, TEXT("Opened shop"))
+		}
+	}
+
 	
 }
 
@@ -29,6 +65,11 @@ void AShopCharacter::Tick(float DeltaTime)
 void AShopCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
+	{
+		EnhancedInputComponent->BindAction(OpenAction, ETriggerEvent::Started, this, &AShopCharacter::OpenShop);
+	}
 
 }
 
